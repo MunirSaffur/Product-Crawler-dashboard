@@ -15,7 +15,7 @@ function TablesTableRow(props) {
   const textColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "#1a202c");
   const colorStatus = useColorModeValue("white", "gray.400");
-  console.log(props)
+
   return (
     <Tr>
       <Td minWidth={{ sm: "250px" }} pl="0px">
