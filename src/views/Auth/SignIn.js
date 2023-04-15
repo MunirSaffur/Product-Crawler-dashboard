@@ -13,6 +13,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
 // Assets
 import signInImage from "assets/img/signInImage.png";
 
@@ -85,7 +86,9 @@ function SignIn() {
                   Remember me
                 </FormLabel>
               </FormControl>
-              <Button
+              <NavLink
+                to="/admin/dashboard">
+                <Button
                 fontSize='10px'
                 type='submit'
                 bg='teal.300'
@@ -102,6 +105,7 @@ function SignIn() {
                 }}>
                 SIGN IN
               </Button>
+              </NavLink>
             </FormControl>
             <Flex
               flexDirection='column'

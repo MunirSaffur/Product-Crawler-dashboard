@@ -21,7 +21,7 @@ import {
 import React, { useRef, useState, useEffect } from "react";
 import Card from "components/Card/Card.js";
 import { tablesTableData } from "variables/general";
-import Requests from "../Tables/components/Requests";
+import MainTable from "../Tables/components/MainTable";
 import DownloadFile from "components/Forms/DownloadFile";
 import axios from "axios";
 import SkeletonTable from "../Tables/components/SkeletonTable";
@@ -42,11 +42,14 @@ export default function Dashboard() {
     setIsLoading(true)
     try {
       const res = await axios.get('https://run.mocky.io/v3/c26aba9b-72c2-4f59-a381-1385aa71fa5f');
-      setResponseFile(res.data)
+      setResponseFile(res.data);
     } catch (error){
       console.error(error)
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
+      SetFileType('');
+      setMultipleRequest('');
+      setSingleRequest('');
     }
   } 
   
@@ -58,6 +61,7 @@ export default function Dashboard() {
 
   useEffect(()=>{
     multipleleRequest === '' && singleRequest === '' || fileType === '' ? setDisableRequest(true) : setDisableRequest(false)
+    console.log(inputFileRef.current.value.split('\\').pop())
   },[multipleleRequest, singleRequest, fileType])
 
   return (
@@ -77,13 +81,14 @@ export default function Dashboard() {
         mt='16px'
         mb='24px'
         gap='24px'>
-        <Card p='1.2rem'>
+        <Card p='1.2rem'> 
           <Input placeholder='Inter product link' onChange={(e)=> setSingleRequest(e.target.value)}/>
           <Center>
             <Text fontSize='lg' color='gray.400'>- or -</Text>
           </Center>
-          <Button onClick={onBtnClick} borderRadius="md" className="uplodFiless" leftIcon={<AttachmentIcon />}>Upload Your File</Button>
-          <Input ref={inputFileRef} placeholder='Inter product link' type="file" display='none' onChange={(e)=>setMultipleRequest(e.target.value)}/>
+          <Button onClick={onBtnClick} borderRadius="md" className="uplodFiless" leftIcon={<AttachmentIcon />} color={inputFileRef.current? 'green' : 'black'}>
+            { inputFileRef.current ? inputFileRef.current.value.split('\\').pop() : 'Upload Your File'}</Button>
+          <Input ref={inputFileRef} type="file" display='none' onChange={(e)=>setMultipleRequest(e.target.value)}/>
           <DownloadFile ms="3" right="0"/>
         </Card>
         <Card p='1.2rem'>
@@ -98,14 +103,14 @@ export default function Dashboard() {
               </MenuList>
             </Menu>
           <Button colorScheme='teal' borderRadius="md" my="4" onClick={()=>getSingleProduct()} leftIcon={<DownloadIcon />} disabled={disableRequest}>
-              Download Product File
+            Download Product File
           </Button>
         </Card>
       </Grid>
       <Center>
 
       {
-        responseFile ?
+        responseFile && !isLoading ?
         <Center>
           <Alert
             status='success'
@@ -135,8 +140,8 @@ export default function Dashboard() {
       { isLoading ? 
       <SkeletonTable/>
        : 
-      <Requests
-        title={"Authors Table"}
+      <MainTable
+        title={"Your Request List"}
         captions={["Order Id", "Creating Date", "Status", "Result"]}
         data={tablesTableData}
       />

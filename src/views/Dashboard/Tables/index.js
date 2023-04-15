@@ -1,14 +1,14 @@
 // Chakra imports
 import { Flex } from "@chakra-ui/react";
 import React from "react";
-import Authors from "./components/Requests";
+import MainTable from "./components/MainTable";
 import Projects from "./components/Projects";
 import { tablesTableData, dashboardTableData } from "variables/general";
 
 function Tables() {
   return (
     <Flex direction='column' pt={{ base: "120px", md: "75px" }}>
-      <Authors
+      <MainTable
         title={"Authors Table"}
         captions={["Author", "Function", "Status", "Employed", ""]}
         data={tablesTableData}

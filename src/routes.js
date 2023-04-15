@@ -1,5 +1,6 @@
 // import
 import Dashboard from "views/Dashboard/Dashboard";
+import Sources from "views/Dashboard/Sources"
 import Tables from "views/Dashboard/Tables";
 import Billing from "views/Dashboard/Billing";
 import RTLPage from "views/Dashboard/RTL";
@@ -27,29 +28,37 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/tables",
-    name: "Tables",
+    path: "/Sources",
+    name: "Sources",
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color="inherit" />,
-    component: Tables,
+    component: Sources,
     layout: "/admin",
   },
   {
-    path: "/billing",
-    name: "Billing",
+    path: "/Destination",
+    name: "Destination",
     rtlName: "لوحة القيادة",
-    icon: <CreditIcon color="inherit" />,
-    component: Billing,
+    icon: <StatsIcon color="inherit" />,
+    component: Sources,
     layout: "/admin",
   },
-  {
-    path: "/rtl-support-page",
-    name: "RTL",
-    rtlName: "آرتيإل",
-    icon: <SupportIcon color="inherit" />,
-    component: RTLPage,
-    layout: "/rtl",
-  },
+  // {
+  //   path: "/tables",
+  //   name: "Tables",
+  //   rtlName: "لوحة القيادة",
+  //   icon: <StatsIcon color="inherit" />,
+  //   component: Tables,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/rtl-support-page",
+  //   name: "RTL",
+  //   rtlName: "آرتيإل",
+  //   icon: <SupportIcon color="inherit" />,
+  //   component: RTLPage,
+  //   layout: "/rtl",
+  // },
   {
     name: "ACCOUNT PAGES",
     category: "account",
@@ -66,22 +75,22 @@ var dashRoutes = [
         layout: "/admin",
       },
       {
-        path: "/signin",
-        name: "Sign In",
+        path: "/billing",
+        name: "Billing",
         rtlName: "لوحة القيادة",
-        icon: <DocumentIcon color="inherit" />,
+        icon: <CreditIcon color="inherit" />,
+        component: Billing,
+        layout: "/admin",
+      },
+
+      {
+        path: "/SignIn",
+        name: "SignIn",
+        rtlName: "لوحة القيادة",
+        icon: <CreditIcon color="inherit" />,
         component: SignIn,
         layout: "/auth",
-      },
-      {
-        path: "/signup",
-        name: "Sign Up",
-        rtlName: "لوحة القيادة",
-        icon: <RocketIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: SignUp,
-        layout: "/auth",
-      },
+      }
     ],
   },
 ];

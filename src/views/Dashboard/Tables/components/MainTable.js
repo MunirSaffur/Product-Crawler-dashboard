@@ -15,7 +15,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import React from "react";
 
-const Requests = ({ title, captions, data }) => {
+const MainTable = ({ title, captions, data }) => {
   const textColor = useColorModeValue("gray.700", "white");
   return (
     <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
@@ -55,4 +55,4 @@ const Requests = ({ title, captions, data }) => {
   );
 };
 
-export default Requests;
+export default MainTable;
