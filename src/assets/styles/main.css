@@ -4,4 +4,14 @@
     border-radius: 8px;
     height: 64px !important;
     width: 100% !important;
+    overflow: hidden;
+}
+.ProMultipleRequest{
+    position: absolute;
+    top: 5px;
+    left: -15px;
+    background: red;
+    padding: 0 20px;
+    transform: rotate(-44deg);
+    color: #fff;
 }

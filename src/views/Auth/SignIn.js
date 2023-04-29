@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Chakra imports
 import {
   Box,
@@ -8,19 +8,43 @@ import {
   FormLabel,
   Heading,
   Input,
-  Link,
-  Switch,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
 // Assets
 import signInImage from "assets/img/signInImage.png";
+import { useHistory } from "react-router-dom";
 
 function SignIn() {
+  const history = useHistory();
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    password: '',
+  })
   // Chakra color mode
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.400", "white");
+
+  const handleUserInfo = (target) => {
+    const newUseInfo = {...userInfo, [target.name]: target.value};
+    setUserInfo(newUseInfo);
+  };
+
+  // LogIn Handler
+  const logInHandler = () => {
+    new Promise(function(resolve, reject) {
+      
+      // Setting 2000 ms time
+      setTimeout(
+        resolve(userInfo.email === "monirsaffor@gmail.com" ?
+      localStorage.setItem("account_type", "demo") :
+      localStorage.setItem("account_type", "live")
+      ), 2000);
+      }).then(function() {
+        history.push("/admin/dashboard");
+      })
+    .catch(err=>console.log(err))
+  }
   return (
     <Flex position='relative' mb='40px'>
       <Flex
@@ -61,9 +85,11 @@ function SignIn() {
                 borderRadius='15px'
                 mb='24px'
                 fontSize='sm'
-                type='text'
+                type='email'
                 placeholder='Your email adress'
                 size='lg'
+                name='email'
+                onChange={(e)=>{handleUserInfo(e.target)}}
               />
               <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
                 Password
@@ -75,21 +101,11 @@ function SignIn() {
                 type='password'
                 placeholder='Your password'
                 size='lg'
+                name='password'
+                onChange={(e)=>{handleUserInfo(e.target)}}
               />
-              <FormControl display='flex' alignItems='center'>
-                <Switch id='remember-login' colorScheme='teal' me='10px' />
-                <FormLabel
-                  htmlFor='remember-login'
-                  mb='0'
-                  ms='1'
-                  fontWeight='normal'>
-                  Remember me
-                </FormLabel>
-              </FormControl>
-              <NavLink
-                to="/admin/dashboard">
                 <Button
-                fontSize='10px'
+                fontSize='16px'
                 type='submit'
                 bg='teal.300'
                 w='100%'
@@ -102,24 +118,11 @@ function SignIn() {
                 }}
                 _active={{
                   bg: "teal.400",
-                }}>
+                }}
+                onClick={()=>{logInHandler()}}>
                 SIGN IN
               </Button>
-              </NavLink>
             </FormControl>
-            <Flex
-              flexDirection='column'
-              justifyContent='center'
-              alignItems='center'
-              maxW='100%'
-              mt='0px'>
-              <Text color={textColor} fontWeight='medium'>
-                Don't have an account?
-                <Link color={titleColor} as='span' ms='5px' fontWeight='bold'>
-                  Sign Up
-                </Link>
-              </Text>
-            </Flex>
           </Flex>
         </Flex>
         <Box

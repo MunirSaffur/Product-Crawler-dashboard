@@ -19,7 +19,7 @@ const DownloadFile = () => {
   }
 
   return (
-      <Link color='orange.500' mt="1" onClick={handleDownloadExcel}><DownloadIcon/> download excel</Link>
+      <Link color='orange.500' mt="1" onClick={handleDownloadExcel} width="fit-content"><DownloadIcon/> download excel</Link>
   );
 };
 

@@ -22,6 +22,7 @@ var dashRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
+    disabled: false,
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
     component: Dashboard,
@@ -30,6 +31,7 @@ var dashRoutes = [
   {
     path: "/Sources",
     name: "Sources",
+    disabled: true,
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color="inherit" />,
     component: Sources,
@@ -38,6 +40,7 @@ var dashRoutes = [
   {
     path: "/Destination",
     name: "Destination",
+    disabled: true,
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color="inherit" />,
     component: Sources,
@@ -68,6 +71,7 @@ var dashRoutes = [
       {
         path: "/profile",
         name: "Profile",
+        disabled: false,
         rtlName: "لوحة القيادة",
         icon: <PersonIcon color="inherit" />,
         secondaryNavbar: true,
@@ -77,15 +81,16 @@ var dashRoutes = [
       {
         path: "/billing",
         name: "Billing",
+        disabled: true,
         rtlName: "لوحة القيادة",
         icon: <CreditIcon color="inherit" />,
         component: Billing,
         layout: "/admin",
       },
-
       {
         path: "/SignIn",
         name: "SignIn",
+        disabled: false,
         rtlName: "لوحة القيادة",
         icon: <CreditIcon color="inherit" />,
         component: SignIn,

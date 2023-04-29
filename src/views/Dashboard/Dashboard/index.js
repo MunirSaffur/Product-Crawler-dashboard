@@ -15,25 +15,29 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
-  Link,
-  Badge
+  CheckboxGroup,
+  Checkbox,
+  Stack
 } from "@chakra-ui/react";
 import React, { useRef, useState, useEffect } from "react";
+import { Player, Controls } from '@lottiefiles/react-lottie-player';
 import Card from "components/Card/Card.js";
 import { tablesTableData } from "variables/general";
 import MainTable from "../Tables/components/MainTable";
 import DownloadFile from "components/Forms/DownloadFile";
 import axios from "axios";
 import SkeletonTable from "../Tables/components/SkeletonTable";
-import { AttachmentIcon, ChevronDownIcon, DownloadIcon } from '@chakra-ui/icons'
+import { AttachmentIcon, ChevronDownIcon, DownloadIcon, CloseIcon } from '@chakra-ui/icons'
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [fileType, SetFileType] = useState('');
+  const [platformType, SetPlatformType] = useState('');
+  const [excludeOptions ,setExcludeOptions] = useState([]);
   const [singleRequest, setSingleRequest] = useState('');
-  const [multipleleRequest, setMultipleRequest] = useState('');
-  const [disableRequest, setDisableRequest] = useState(true);
-  const [responseFile, setResponseFile] = useState(null)
+  const [multipleRequest, setMultipleRequest] = useState('');
+  const [multipleRequestText, setMultipleRequestText] = useState('')
+  const [serquestStatus, setRequestStatus] = useState(false)
 
   const textColor = useColorModeValue("gray.700", "white");
 
@@ -41,17 +45,24 @@ export default function Dashboard() {
   const getSingleProduct = async () => {
     setIsLoading(true)
     try {
-      const res = await axios.get('https://run.mocky.io/v3/c26aba9b-72c2-4f59-a381-1385aa71fa5f');
-      setResponseFile(res.data);
+      const res = await axios.post('https://run.mocky.io/v3/c26aba9b-72c2-4f59-a381-1385aa71fa5f');
+      setRequestStatus(true)
     } catch (error){
       console.error(error)
     } finally {
       setIsLoading(false);
       SetFileType('');
-      setMultipleRequest('');
+      SetPlatformType('');
+      setExcludeOptions('');
       setSingleRequest('');
+      setMultipleRequest('');
     }
   } 
+  useEffect(()=>{
+    setMultipleRequestText(
+      inputFileRef.current && inputFileRef.current.value 
+      ?inputFileRef.current.value.split('\\').pop() : '')
+  },[multipleRequest])
   
   // Upload File
   const inputFileRef = useRef();
@@ -59,10 +70,14 @@ export default function Dashboard() {
     inputFileRef.current.click();
   };
 
-  useEffect(()=>{
-    multipleleRequest === '' && singleRequest === '' || fileType === '' ? setDisableRequest(true) : setDisableRequest(false)
-    console.log(inputFileRef.current.value.split('\\').pop())
-  },[multipleleRequest, singleRequest, fileType])
+  const resetFileInput = () => {
+    // 👇️ reset input value
+    setMultipleRequest('');
+    setMultipleRequestText('');
+    inputFileRef.current.value = null;
+    console.log(multipleRequestText)
+    console.log(multipleRequest)
+  };
 
   return (
     <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>
@@ -70,47 +85,82 @@ export default function Dashboard() {
       <Grid
         templateColumns={{ md: "1fr", lg: "1.5fr 1.5fr" }}
         templateRows={{ md: "1fr auto", lg: "1fr" }}
-        mt='10px'
-        gap='24px'>
-          <Text fontSize='md' color={textColor} fontWeight='bold'>Step 1</Text>
-          <Text fontSize='md' color={textColor} fontWeight='bold'>Step 2</Text>
-        </Grid>
-      <Grid
-        templateColumns={{ md: "1fr", lg: "1.5fr 1.5fr" }}
-        templateRows={{ md: "1fr auto", lg: "1fr" }}
         mt='16px'
-        mb='24px'
+        mb='8px'
         gap='24px'>
         <Card p='1.2rem'> 
-          <Input placeholder='Inter product link' onChange={(e)=> setSingleRequest(e.target.value)}/>
+
+          {/* Single Request */}
+            <Input placeholder='Inter product link' onChange={(e)=> setSingleRequest(e.target.value)} disabled={multipleRequest}/>
+          {/* Single Request */}
+
           <Center>
             <Text fontSize='lg' color='gray.400'>- or -</Text>
           </Center>
-          <Button onClick={onBtnClick} borderRadius="md" className="uplodFiless" leftIcon={<AttachmentIcon />} color={inputFileRef.current? 'green' : 'black'}>
-            { inputFileRef.current ? inputFileRef.current.value.split('\\').pop() : 'Upload Your File'}</Button>
-          <Input ref={inputFileRef} type="file" display='none' onChange={(e)=>setMultipleRequest(e.target.value)}/>
-          <DownloadFile ms="3" right="0"/>
+
+          {/* Multiple Request */}
+            <Flex>
+            <Button onClick={onBtnClick} borderRadius="md" className="uplodFiless" leftIcon={<AttachmentIcon />} color={inputFileRef.current && inputFileRef.current.value ? 'green' : 'black'} disabled={singleRequest || localStorage.getItem("account_type") === 'demo'}>
+              { multipleRequestText.length ? multipleRequestText : 'Upload Your File'} 
+              { localStorage.getItem("account_type") === 'demo' ? <span className="ProMultipleRequest">Pro</span> : <></>}
+            </Button>
+            <Button onClick={()=>{resetFileInput()}} height="100%" ml="2" borderRadius="md" disabled={localStorage.getItem("account_type") === 'demo'}><CloseIcon/></Button>
+            </Flex>
+            <Input ref={inputFileRef} type="file" display='none' onChange={(e)=>setMultipleRequest(e.target.value)}/>
+            <DownloadFile ms="3" right="0"/>
+          {/* Multiple Request */}
+
         </Card>
         <Card p='1.2rem'>
+          {/* Select File Type */}
             <Menu ms="3">
               <MenuButton  borderRadius="md" as={Button} rightIcon={<ChevronDownIcon />}>
               { fileType === '' ? 'Select file type' : fileType }
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={()=>SetFileType('Excel')}>Excel</MenuItem>
-                <MenuItem onClick={()=>SetFileType('Csv')}>Csv</MenuItem>
-                <MenuItem onClick={()=>SetFileType('Xlsx')}>Xlsx</MenuItem>
+                { ['excel', 'csv', 'xlsx'].map((item, index)=>(
+                  <MenuItem key={index} onClick={()=>SetFileType(item)} style={{textTransform:'capitalize'}}>{item}</MenuItem>
+                )) }
               </MenuList>
             </Menu>
-          <Button colorScheme='teal' borderRadius="md" my="4" onClick={()=>getSingleProduct()} leftIcon={<DownloadIcon />} disabled={disableRequest}>
-            Download Product File
-          </Button>
+          {/* Select File Type */}
+
+          {/* Select Platform Type */}
+          <Menu>
+              <MenuButton my="18px" borderRadius="md" as={Button} rightIcon={<ChevronDownIcon />}>
+              { platformType === '' ? 'Select Platform type' : platformType }
+              </MenuButton>
+              <MenuList>
+                { ['shopify', 'wordpress', 'opencart'].map((item, index)=>(
+                  <MenuItem key={index} onClick={()=>SetPlatformType(item)} style={{textTransform:'capitalize'}}>{item}</MenuItem>
+                )) }
+              </MenuList>
+            </Menu>
+          {/* Select File Type */}
+
+          {/* Exclude Options */}
+          <Text fontSize='lg'>Exclude: </Text>
+          <CheckboxGroup colorScheme='green' onChange={(e)=>{setExcludeOptions(e)}}>
+            <Stack spacing={[5, 3]} direction={['row', 'row']}>
+              { ['sku', 'color', 'size'].map((item, index)=>(
+                 <Checkbox key={index} value={item} style={{textTransform:'capitalize'}}>{item}</Checkbox>
+              )) }
+            </Stack>
+          </CheckboxGroup>
+
         </Card>
       </Grid>
+      {/* Request Action */}
+        <Center>
+          <Button colorScheme='teal' borderRadius="md" mt="4" mb='6' px="50px" width="fit-content" onClick={()=>getSingleProduct()} leftIcon={<DownloadIcon />} disabled={multipleRequest === '' && singleRequest === '' || fileType === '' || platformType === ''}>
+            Start Proccess
+          </Button>
+        </Center>
+      {/* Request Action */}
       <Center>
 
       {
-        responseFile && !isLoading ?
+        serquestStatus && !isLoading ?
         <Center>
           <Alert
             status='success'
@@ -119,16 +169,23 @@ export default function Dashboard() {
             alignItems='center'
             justifyContent='center'
             textAlign='center'
-            height='200px'
+            height='250px'
             width='600px'
             mb="24px"
+            pt="0"
           >
-            <AlertIcon boxSize='40px' mr={0} />
-            <AlertTitle mt={4} mb={1} fontSize='lg'>
-              Your Products Is Ready!
+            <Player
+                autoplay
+                loop
+                src="https://assets4.lottiefiles.com/packages/lf20_rwkblgnp.json"
+                style={{ height: '100px', width: '100px' }}
+              >
+              </Player>
+            <AlertTitle mb={1} fontSize='lg'>
+              Proccess has ben started!
             </AlertTitle>
             <AlertDescription maxWidth='sm'>
-            download your products file by <Badge colorScheme='purple'><Link href={responseFile}>Clicking Here</Link></Badge>
+            We have recieved your request, the product/s file will be sent to your E-mail
             </AlertDescription>
           </Alert>
         </Center> :
