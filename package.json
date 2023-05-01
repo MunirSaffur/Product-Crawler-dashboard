@@ -2,7 +2,7 @@
 	"name": "purity-dashboard-react",
 	"version": "2.0.2",
 	"private": true,
-	"homepage": "https://demos.creative-tim.com/purity-ui-dashboard/#/",
+	"homepage": "https://MunirSaffur.github.io/Product-Crawler-dashboard",
 	"dependencies": {
 		"@chakra-ui/icons": "^1.1.5",
 		"@chakra-ui/react": "1.8.8",
@@ -46,11 +46,12 @@
 		"react-error-overlay": "6.0.11"
 	},
 	"scripts": {
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d build",
 		"start": "react-scripts start",
 		"build": "react-scripts build && gulp licenses",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
-		"deploy": "npm run build",
 		"lint:check": "eslint . --ext=js,jsx;  exit 0",
 		"lint:fix": "eslint . --ext=js,jsx --fix;  exit 0",
 		"install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
@@ -63,6 +64,7 @@
 		"@babel/plugin-transform-react-jsx-source": "^7.14.5",
 		"eslint-config-prettier": "8.3.0",
 		"eslint-plugin-prettier": "3.4.0",
+		"gh-pages": "^5.0.0",
 		"gulp": "4.0.2",
 		"gulp-append-prepend": "1.0.9",
 		"prettier": "2.2.1"
