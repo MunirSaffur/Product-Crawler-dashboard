@@ -48,7 +48,7 @@ function Sidebar(props) {
           borderRadius={sidebarRadius}
         >
           <SidebarContent routes={routes}
-        logoText={"PRODUCTBASE.ai "}
+        logoText={"Data Harvest"}
         display="none"
         sidebarVariant={sidebarVariant}
         />

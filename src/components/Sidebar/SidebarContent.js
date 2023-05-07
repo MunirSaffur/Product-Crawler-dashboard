@@ -6,7 +6,8 @@ import {
     Link,
     Stack,
     Text,
-    useColorModeValue
+    useColorModeValue,
+    Image
 } from "@chakra-ui/react";
 import IconBox from "components/Icons/IconBox";
 import { CreativeTimLogo } from "components/Icons/Icons";
@@ -14,6 +15,7 @@ import { Separator } from "components/Separator/Separator";
 import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import logo from '../../assets/img/logo.png'
 
 // this function creates the links and collapses that appear in the sidebar (left menu)
 
@@ -243,8 +245,9 @@ const SidebarContent = ({ logoText, routes }) => {
         alignItems="center"
         fontSize="11px"
       >
-        <CreativeTimLogo w="32px" h="32px" me="10px" />
-        <Text fontSize="sm" mt="3px">
+        {/* <CreativeTimLogo w="32px" h="32px" me="10px" /> */}
+        <Image src={logo}  w="32px" h="32px" me="10px"/>
+        <Text fontSize="sm" mt="3px" style={{color:'#333'}}>
           {logoText}
         </Text>
       </Link>

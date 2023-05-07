@@ -41,11 +41,11 @@ export default function Footer(props) {
         >
           {document.documentElement.dir === "rtl"
             ? " توقيت الإبداعية"
-            : "Product Name"}
+            : "Data Harvest"}
         </Link>
         {document.documentElement.dir === "rtl"
           ? "للحصول على ويب أفضل"
-          : " for a better web"}
+          : " for a better E-commerce"}
       </Text>
     </Flex>
   );
